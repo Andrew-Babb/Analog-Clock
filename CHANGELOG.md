@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.2
+
+- Added command-line argument parsing.
+- Added configurable timezone selection with `--timezone` / `-z`.
+- Added configurable redraw timing with `--refresh-rate` / `-r`.
+- Added optional manual clock sizing with `--radius`.
+- Added display toggles for the second hand, digital readout, and border.
+- Added 12-hour and 24-hour digital time formats with `--format`.
+- Added `--version` output.
+
 ## v1.1
 
 - Replaced the fixed UTC offset with Python's `zoneinfo.ZoneInfo`.

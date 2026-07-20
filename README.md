@@ -1,8 +1,9 @@
-# Analog Clock v1.1
+# Analog Clock v1.2
 
 Analog Clock is a terminal-based analog clock rendered with Python's `curses`
 module. It draws an analog clock face, hour/minute/second hands, and a digital
-time readout.
+time readout. Version 1.2 adds command-line options for timezone, refresh rate,
+clock size, display toggles, and digital time format.
 
 ## Requirements
 
@@ -14,20 +15,40 @@ local time.
 
 ## Timezone
 
-Version 1.1 displays time for the `America/New_York` timezone:
+By default, the clock displays time for the `America/New_York` timezone. Use
+`--timezone` or `-z` with any valid IANA timezone name to display a different
+timezone:
 
-```python
-TIME_ZONE = ZoneInfo("America/New_York")
+```bash
+python3 analog_clock.py --timezone America/Chicago
 ```
 
 This lets Python handle daylight saving time and standard time automatically.
-To use a different timezone, replace `America/New_York` with another IANA
-timezone name, such as `America/Chicago`, `Europe/London`, or `Asia/Tokyo`.
 
 ## Run
 
 ```bash
-python3 analog_clock_v1.1.py
+python3 analog_clock.py
+```
+
+## Options
+
+```text
+-z, --timezone IANA_NAME   Timezone to display (default: America/New_York)
+-r, --refresh-rate SECONDS Seconds between redraws (default: 1)
+--radius CELLS             Clock radius in terminal columns (default: fit to terminal)
+--no-seconds               Hide the second hand
+--no-digital               Hide the digital time readout
+--no-border                Hide the terminal border
+--format {12,24}           Digital clock format (default: 24)
+--version                  Show the program version
+```
+
+Examples:
+
+```bash
+python3 analog_clock.py --timezone Europe/London --format 12
+python3 analog_clock.py --refresh-rate 0.25 --radius 18 --no-border
 ```
 
 ## Controls
