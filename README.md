@@ -1,49 +1,41 @@
-# Terminal Analog Clock
+# Analog Clock v1.1
 
-A Python terminal analog clock rendered with `curses`. The clock draws a live analog face, hour/minute/second hands, and a digital time display at the bottom of the terminal.
+Analog Clock is a terminal-based analog clock rendered with Python's `curses`
+module. It draws an analog clock face, hour/minute/second hands, and a digital
+time readout.
 
 ## Requirements
 
-- Python 3
+- Python 3.9 or newer
 - A terminal that supports `curses`
 
-No third-party Python packages are required.
+The clock uses Python's standard-library `zoneinfo` module for timezone-aware
+local time.
+
+## Timezone
+
+Version 1.1 displays time for the `America/New_York` timezone:
+
+```python
+TIME_ZONE = ZoneInfo("America/New_York")
+```
+
+This lets Python handle daylight saving time and standard time automatically.
+To use a different timezone, replace `America/New_York` with another IANA
+timezone name, such as `America/Chicago`, `Europe/London`, or `Asia/Tokyo`.
 
 ## Run
 
-From this project directory:
-
 ```bash
-python3 analog_clock.py
+python3 analog_clock_v1.1.py
 ```
 
 ## Controls
 
-- `q` or `Q`: quit the clock
-- `Ctrl-C`: force quit from the terminal
-
-## Timezone
-
-The program currently applies a fixed East Coast USA offset:
-
-```python
-TZ_OFFSET = timedelta(hours=-4)
-```
-
-This means the displayed time is calculated from the system clock plus a `-4` hour offset. To use your local system time directly, change that line in `analog_clock.py` to:
-
-```python
-TZ_OFFSET = timedelta(hours=0)
-```
-
-## How It Works
-
-- `curses` manages the full-screen terminal display.
-- `polar_to_screen()` converts clock angles into terminal row/column positions.
-- `draw_face()` renders the hour markers and circular face.
-- `draw_line()` draws the clock hands using Bresenham line drawing.
-- `render()` refreshes the clock once per second using the current time.
+- Press `q` or `Q` to quit.
+- Press `Ctrl-C` to interrupt from the terminal.
 
 ## Notes
 
-The clock scales to the current terminal size. If the display looks cramped, enlarge the terminal window and run the program again.
+The clock face accounts for terminal cell proportions by scaling vertical
+distances, which helps the clock appear circular in typical terminal fonts.

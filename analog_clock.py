@@ -8,15 +8,15 @@ Quit with: q or Ctrl-C
 import curses
 import math
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # Terminal character cells are roughly twice as tall as they are wide,
 # so vertical distances are scaled down by this factor to keep the
 # clock face looking circular instead of egg-shaped.
 Y_ASPECT = 0.5
 
-# East Coast USA is 4 hours behind system/UTC time in this setup.
-TZ_OFFSET = timedelta(hours=-4)
+TIME_ZONE = ZoneInfo("America/New_York")
 
 
 def polar_to_screen(cy, cx, length, angle_deg):
@@ -84,7 +84,7 @@ def draw_face(win, cy, cx, radius):
 
 
 def render(win):
-    now = datetime.now() + TZ_OFFSET
+    now = datetime.now(TIME_ZONE)
     hour, minute, second = now.hour % 12, now.minute, now.second
 
     max_y, max_x = win.getmaxyx()
