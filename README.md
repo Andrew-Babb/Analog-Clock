@@ -1,9 +1,14 @@
-# Analog Clock v1.2
+# Analog Clock v1.3
 
 Analog Clock is a terminal-based analog clock rendered with Python's `curses`
-module. It draws an analog clock face, hour/minute/second hands, and a digital
-time readout. Version 1.2 adds command-line options for timezone, refresh rate,
-clock size, display toggles, and digital time format.
+module.  It draws an analog clock face, hour, minute, and optional second hands,
+along with an optional digital time readout.
+
+Version 1.3 improves terminal resilience and responsiveness.  The clock now
+automatically fits the available terminal space, safely limits oversized manual
+radius requests, displays a clear message when the terminal is too small, and
+redraws immediately when the terminal is resized.  The `--no-seconds` option now
+removes seconds from both the analog and digital displays.
 
 ## Requirements
 
@@ -36,8 +41,9 @@ python3 analog_clock.py
 ```text
 -z, --timezone IANA_NAME   Timezone to display (default: America/New_York)
 -r, --refresh-rate SECONDS Seconds between redraws (default: 1)
---radius CELLS             Clock radius in terminal columns (default: fit to terminal)
---no-seconds               Hide the second hand
+--radius CELLS             Clock radius in terminal columns
+                           (minimum: 5; default: fit to terminal)
+--no-seconds               Hide seconds from the analog and digital displays
 --no-digital               Hide the digital time readout
 --no-border                Hide the terminal border
 --format {12,24}           Digital clock format (default: 24)
@@ -49,14 +55,31 @@ Examples:
 ```bash
 python3 analog_clock.py --timezone Europe/London --format 12
 python3 analog_clock.py --refresh-rate 0.25 --radius 18 --no-border
+python3 analog_clock.py --format 12 --no-seconds
+python3 analog_clock.py --no-border --no-digital
 ```
+
+## Responsive sizing
+
+By default, the clock uses the largest radius that safely fits inside the current terminal window.
+
+A radius supplied with `--radius` is treated as the preferred size.  If the requested radius is larger than the available terminal space, the clock reduces it to the largest size that fits.
+
+The minimum supported radius is 5.  If the terminal cannot fit a clock at that size, the program displays `Terminal too small`.  Enlarging the terminal causes the clock to return automatically.
 
 ## Controls
 
 - Press `q` or `Q` to quit.
 - Press `Ctrl-C` to interrupt from the terminal.
+- Resize the terminal to recalculate and redraw the clock layout.
 
 ## Notes
 
 The clock face accounts for terminal cell proportions by scaling vertical
 distances, which helps the clock appear circular in typical terminal fonts.
+
+Terminal drawing operations are clipped to the available windows bounds to
+prevent ordinary edge and resize conditions from crashing the display.
+
+The refresh interval is measured with Python's monotonic clock so elapsed-time
+measurement is not affected by changes to the system wall clock.

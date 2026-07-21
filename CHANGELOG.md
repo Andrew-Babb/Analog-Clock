@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.3
+
+- Centralized character and string rendering through safe drawing helpers.
+- Added boundary checking and text clipping for terminal drawing operations.
+- Added a minimum supported clock radius of 5.
+- Added responsive radius calculation based on the available terminal layout.
+- Added automatic clamping when a manually requested radius is too large.
+- Added a `Terminal too small` display when the minimum clock cannot fit.
+- Added immediate layout recalculation when the terminal is resized.
+- Replaced wall-clock interval measurement with `time.monotonic()`.
+- Updated `--no-seconds` to hide seconds from both the analog and digital
+  displays.
+
 ## v1.2
 
 - Added command-line argument parsing.
