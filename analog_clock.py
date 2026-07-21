@@ -196,27 +196,19 @@ def draw_face(win, cy, cx, radius):
         y, x = polar_to_screen(cy, cx, radius, angle)
         label = "12" if hour == 0 else str(hour)
         ch = "#" if hour % 3 == 0 else "*"
+
         if hour % 3 == 0:
             ly = y
             lx = x - (len(label) // 2)
-            try:
-                win.addstr(ly, lx, label)
-            except curses.error:
-                pass
+            safe_addstr(win, ly, lx, label)
         else:
-            try:
-                win.addch(y, x, ch)
-            except curses.error:
-                pass
+            safe_addch(win, y, x, ch)
 
     steps = 120
     for i in range(steps):
         angle = i * (360 / steps)
         y, x = polar_to_screen(cy, cx, radius, angle)
-        try:
-            win.addch(y, x, ".")
-        except curses.error:
-            pass
+        safe_addch(win, y, x, ".")
 
 
 def fitted_radius(max_y, max_x, show_border):
@@ -260,17 +252,17 @@ def render(win, config):
         sy, sx = polar_to_screen(cy, cx, radius * 0.9, second_angle)
         draw_line(win, cy, cx, sy, sx, "o")
 
-    try:
-        win.addch(cy, cx, "+")
-    except curses.error:
-        pass
+    safe_addch(win, cy, cx, "+")
 
     if config.show_digital:
         digital = digital_time(now, config.time_format)
-        try:
-            win.addstr(max_y - 2, max(1, cx - len(digital) // 2), digital, curses.A_BOLD)
-        except curses.error:
-            pass
+        safe_addstr(
+            win,
+            max_y - 2,
+            max(1, cx - len(digital) // 2),
+            digital,
+            curses.A_BOLD,
+        )
 
     win.refresh()
 
