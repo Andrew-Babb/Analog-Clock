@@ -343,12 +343,16 @@ def main(stdscr, config):
     while True:
         render(stdscr, config)
 
-        start = time.time()
-        while time.time() - start < config.refresh_rate:
+        deadline = time.monotonic() + config.refresh_rate
+        while time.monotonic() < deadline:
             key = stdscr.getch()
             if key in (ord("q"), ord("Q")):
                 return
-            time.sleep(0.02)
+            if key == curses.KEY_RESIZE:
+                break
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(0.02, remaining))
 
 
 if __name__ == "__main__":
