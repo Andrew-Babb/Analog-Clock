@@ -100,7 +100,7 @@ def parse_args():
     parser.add_argument(
         "--no-seconds",
         action="store_true",
-        help="hide the second hand",
+        help="hide seconds from the analog and digital displays",
     )
     parser.add_argument(
         "--no-digital",
@@ -271,11 +271,13 @@ def draw_too_small(win):
     win.refresh()
 
 
-def digital_time(now, time_format):
+def digital_time(now, time_format, show_seconds):
     if time_format == "12":
-        return now.strftime("%I:%M:%S %p").lstrip("0")
-    return now.strftime("%H:%M:%S")
+        pattern = "%I:%M:%S %p" if show_seconds else "%I:%M %p"
+        return now.strftime(pattern).lstrip("0")
 
+    pattern = "%H:%M:%S" if show_seconds else "%H:%M"
+    return now.strftime(pattern)
 
 def render(win, config):
     now = datetime.now(config.timezone)
@@ -323,7 +325,11 @@ def render(win, config):
     safe_addch(win, cy, cx, "+")
 
     if config.show_digital:
-        digital = digital_time(now, config.time_format)
+        digital = digital_time(
+            now,
+            config.time_format,
+            config.show_seconds,
+        )
         safe_addstr(
             win,
             max_y - 2,
