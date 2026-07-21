@@ -138,6 +138,37 @@ def polar_to_screen(cy, cx, length, angle_deg):
     return cy + int(round(y * Y_ASPECT)), cx + int(round(x))
 
 
+def safe_addch(win, y, x, ch, attr=0):
+    """Draw one character only when the target cell is valid."""
+    max_y, max_x = win.getmaxyx()
+
+    if not (0 <= y < max_y and 0 <= x < max_x):
+        return
+
+    try:
+        win.addch(y, x, ch, attr)
+    except curses.error:
+        pass
+
+
+def safe_addstr(win, y, x, text, attr=0):
+    """Draw the portion of a string that fits inside the window."""
+    max_y, max_x = win.getmaxyx()
+
+    if not (0 <= y < max_y and 0 <= x < max_x):
+        return
+
+    visible_text = text[: max_x - x]
+
+    if not visible_text:
+        return
+
+    try:
+        win.addstr(y, x, visible_text, attr)
+    except curses.error:
+        pass
+
+
 def draw_line(win, y0, x0, y1, x1, ch):
     """Bresenham line drawing, clipped to the window bounds."""
     max_y, max_x = win.getmaxyx()
