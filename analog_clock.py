@@ -47,13 +47,17 @@ def positive_float(value):
     return parsed
 
 
-def positive_int(value):
+def valid_radius(value):
     try:
         parsed = int(value)
     except ValueError as exc:
         raise argparse.ArgumentTypeError("must be an integer") from exc
-    if parsed <= 0:
-        raise argparse.ArgumentTypeError("must be greater than 0")
+
+    if parsed < MIN_RADIUS:
+        raise argparse.ArgumentTypeError(
+            f"must be at least {MIN_RADIUS}"
+        )
+
     return parsed
 
 
@@ -86,9 +90,12 @@ def parse_args():
     )
     parser.add_argument(
         "--radius",
-        type=positive_int,
+        type=valid_radius,
         metavar="CELLS",
-        help="clock radius in terminal columns (default: fit to terminal)",
+        help=(
+            "clock radius in terminal columns "
+            f"(minimum: {MIN_RADIUS}; default: fit to terminal)"
+        ),
     )
     parser.add_argument(
         "--no-seconds",
@@ -211,10 +218,57 @@ def draw_face(win, cy, cx, radius):
         safe_addch(win, y, x, ".")
 
 
-def fitted_radius(max_y, max_x, show_border):
-    y_padding = 6 if show_border else 4
-    x_padding = 4 if show_border else 2
-    return max(5, min((max_y - y_padding) // 2, (max_x - x_padding) // 2) - 1)
+def maximum_fitted_radius(
+        max_y,
+        max_x,
+        show_border,
+        show_digital,
+    ):
+        """Return the largest radius that fits inside the current layout."""
+        left_edge = 1 if show_border else 0
+        right_edge = max_x - 2 if show_border else max_x - 1
+        top_edge = 1 if show_border else 0
+
+        if show_digital:
+            bottom_edge = max_y - 3
+        elif show_border:
+            bottom_edge = max_y - 2
+        else:
+            bottom_edge = max_y - 1
+
+        cy = max_y // 2 - 1
+        cx = max_x // 2
+
+        horizontal_space = min(
+            cx - left_edge,
+            right_edge - cx,
+        )
+        vertical_space = min(
+            cy - top_edge,
+            bottom_edge - cy,
+        )
+
+        vertical_radius = int(vertical_space / Y_ASPECT)
+
+        return min(horizontal_space, vertical_radius)
+
+
+def draw_too_small(win):
+    """Display a message when the minimum clock cannot fit."""
+    max_y, max_x = win.getmaxyx()
+    message = "Terminal too small"
+
+    y = max_y // 2
+    x = max(0, (max_x - len(message)) // 2)
+
+    safe_addstr(
+        win,
+        y,
+        x,
+        message,
+        curses.A_BOLD,
+    )
+    win.refresh()
 
 
 def digital_time(now, time_format):
@@ -229,11 +283,25 @@ def render(win, config):
 
     max_y, max_x = win.getmaxyx()
     cy, cx = max_y // 2 - 1, max_x // 2
-    radius = config.radius if config.radius is not None else fitted_radius(
-        max_y, max_x, config.show_border
+
+    available_radius = maximum_fitted_radius(
+        max_y,
+        max_x,
+        config.show_border,
+        config.show_digital,
     )
 
     win.erase()
+
+    if available_radius < MIN_RADIUS:
+        draw_too_small(win)
+        return
+
+    if config.radius is None:
+        radius = available_radius
+    else:
+        radius = min(config.radius, available_radius)
+
     if config.show_border:
         win.border()
 
