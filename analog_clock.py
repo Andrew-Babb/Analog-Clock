@@ -20,9 +20,10 @@ from zoneinfo import ZoneInfoNotFoundError
 # clock face looking circular instead of egg-shaped.
 Y_ASPECT = 0.5
 
-VERSION = "1.2"
+VERSION = "1.3"
 DEFAULT_TIMEZONE = "America/New_York"
 DEFAULT_REFRESH_RATE = 1.0
+MIN_RADIUS = 5
 
 
 @dataclass(frozen=True)
