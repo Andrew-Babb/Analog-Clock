@@ -171,7 +171,6 @@ def safe_addstr(win, y, x, text, attr=0):
 
 def draw_line(win, y0, x0, y1, x1, ch):
     """Bresenham line drawing, clipped to the window bounds."""
-    max_y, max_x = win.getmaxyx()
     dy = abs(y1 - y0)
     dx = abs(x1 - x0)
     sy = 1 if y0 < y1 else -1
@@ -179,11 +178,7 @@ def draw_line(win, y0, x0, y1, x1, ch):
     err = dx - dy
     y, x = y0, x0
     while True:
-        if 0 <= y < max_y - 1 and 0 <= x < max_x:
-            try:
-                win.addch(y, x, ch)
-            except curses.error:
-                pass
+        safe_addch(win, y, x, ch)
         if y == y1 and x == x1:
             break
         e2 = 2 * err
