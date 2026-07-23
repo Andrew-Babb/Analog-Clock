@@ -13,6 +13,7 @@
 - Suppressed traceback on Ctrl-C Exit
 - Cleaned up CHANGELOG formatting
 - Documented windows-curses and tzdata as required depencies on Windows.
+- Synced render loop to wall-clock second boundaries.
 
 ## v1.3
 

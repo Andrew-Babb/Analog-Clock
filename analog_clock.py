@@ -349,7 +349,10 @@ def main(stdscr, config):
     while True:
         render(stdscr, config)
 
-        deadline = time.monotonic() + config.refresh_rate
+        now = time.time()
+        deadline = time.monotonic() + (
+            config.refresh_rate - (now % config.refresh_rate)
+        )
         while time.monotonic() < deadline:
             key = stdscr.getch()
             if key in (ord("q"), ord("Q")):
