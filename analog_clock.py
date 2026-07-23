@@ -343,8 +343,7 @@ def render(win, config):
 
 def main(stdscr, config):
     curses.curs_set(0)
-    stdscr.nodelay(True)
-    stdscr.timeout(0)
+    stdscr.timeout(20)
 
     while True:
         render(stdscr, config)
@@ -359,9 +358,6 @@ def main(stdscr, config):
                 return
             if key == curses.KEY_RESIZE:
                 break
-            remaining = deadline - time.monotonic()
-            if remaining > 0:
-                time.sleep(min(0.02, remaining))
 
 
 if __name__ == "__main__":

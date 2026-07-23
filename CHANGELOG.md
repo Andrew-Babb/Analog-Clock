@@ -14,6 +14,7 @@
 - Cleaned up CHANGELOG formatting
 - Documented windows-curses and tzdata as required depencies on Windows.
 - Synced render loop to wall-clock second boundaries.
+- Simplified key-polling loop using blocking getch timeout.
 
 ## v1.3
 
