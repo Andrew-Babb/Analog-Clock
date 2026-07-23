@@ -4,6 +4,7 @@
 
 - Clock face markers no longer overwritten by dot ring.
 - `-z, --timezone` error message now consistent for malformed strings.
+- Suppressed traceback on Ctrl-C Exit
 
 ## v1.3
 

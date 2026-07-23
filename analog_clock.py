@@ -362,4 +362,7 @@ def main(stdscr, config):
 
 
 if __name__ == "__main__":
-    curses.wrapper(main, parse_args())
+    try:
+        curses.wrapper(main, parse_args())
+    except KeyboardInterrupt:
+        pass
