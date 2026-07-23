@@ -2,11 +2,21 @@
 
 ## Unreleased
 
+### Added
+
+- Created a `requirements.txt` file to declare the Windows-specific dependencies.
+
+### Fixed
+
 - Clock face markers no longer overwritten by dot ring.
 - `-z, --timezone` error message now consistent for malformed strings.
 - Suppressed traceback on Ctrl-C Exit
+- Cleaned up CHANGELOG formatting
+- Documented windows-curses and tzdata as required depencies on Windows.
 
 ## v1.3
+
+### Added
 
 - Centralized character and string rendering through safe drawing helpers.
 - Added boundary checking and text clipping for terminal drawing operations.
@@ -16,10 +26,15 @@
 - Added a `Terminal too small` display when the minimum clock cannot fit.
 - Added immediate layout recalculation when the terminal is resized.
 - Replaced wall-clock interval measurement with `time.monotonic()`.
+
+### Fixed
+
 - Updated `--no-seconds` to hide seconds from both the analog and digital
   displays.
 
 ## v1.2
+
+### Added
 
 - Added command-line argument parsing.
 - Added configurable timezone selection with `--timezone` / `-z`.
@@ -30,6 +45,8 @@
 - Added `--version` output.
 
 ## v1.1
+
+### Fixed
 
 - Replaced the fixed UTC offset with Python's `zoneinfo.ZoneInfo`.
 - Set the clock timezone to `America/New_York`.

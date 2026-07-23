@@ -18,6 +18,13 @@ removes seconds from both the analog and digital displays.
 The clock uses Python's standard-library `zoneinfo` module for timezone-aware
 local time.
 
+On Windows, two additional packages are required (Linux/macOS already provide
+these via the OS):
+
+```bash
+pip install windows-curses tzdata
+```
+
 ## Timezone
 
 By default, the clock displays time for the `America/New_York` timezone. Use
