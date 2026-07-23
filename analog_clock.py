@@ -64,7 +64,7 @@ def valid_radius(value):
 def valid_timezone(value):
     try:
         return ZoneInfo(value)
-    except ZoneInfoNotFoundError as exc:
+    except (ZoneInfoNotFoundError, ValueError) as exc:
         raise argparse.ArgumentTypeError(f"unknown timezone: {value}") from exc
 
 

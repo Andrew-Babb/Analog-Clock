@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Clock face markers no longer overwritten by dot ring.
+- `-z, --timezone` error message now consistent for malformed strings.
 
 ## v1.3
 
