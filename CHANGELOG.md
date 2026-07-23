@@ -15,6 +15,7 @@
 - Documented windows-curses and tzdata as required depencies on Windows.
 - Synced render loop to wall-clock second boundaries.
 - Simplified key-polling loop using blocking getch timeout.
+- Fixed inconsistent indentation in maximum_fitted_radius.
 
 ## v1.3
 

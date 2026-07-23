@@ -219,38 +219,38 @@ def draw_face(win, cy, cx, radius):
 
 
 def maximum_fitted_radius(
-        max_y,
-        max_x,
-        show_border,
-        show_digital,
-    ):
-        """Return the largest radius that fits inside the current layout."""
-        left_edge = 1 if show_border else 0
-        right_edge = max_x - 2 if show_border else max_x - 1
-        top_edge = 1 if show_border else 0
+    max_y,
+    max_x,
+    show_border,
+    show_digital,
+):
+    """Return the largest radius that fits inside the current layout."""
+    left_edge = 1 if show_border else 0
+    right_edge = max_x - 2 if show_border else max_x - 1
+    top_edge = 1 if show_border else 0
 
-        if show_digital:
-            bottom_edge = max_y - 3
-        elif show_border:
-            bottom_edge = max_y - 2
-        else:
-            bottom_edge = max_y - 1
+    if show_digital:
+        bottom_edge = max_y - 3
+    elif show_border:
+        bottom_edge = max_y - 2
+    else:
+        bottom_edge = max_y - 1
 
-        cy = max_y // 2 - 1
-        cx = max_x // 2
+    cy = max_y // 2 - 1
+    cx = max_x // 2
 
-        horizontal_space = min(
-            cx - left_edge,
-            right_edge - cx,
-        )
-        vertical_space = min(
-            cy - top_edge,
-            bottom_edge - cy,
-        )
+    horizontal_space = min(
+        cx - left_edge,
+        right_edge - cx,
+    )
+    vertical_space = min(
+        cy - top_edge,
+        bottom_edge - cy,
+    )
 
-        vertical_radius = int(vertical_space / Y_ASPECT)
+    vertical_radius = int(vertical_space / Y_ASPECT)
 
-        return min(horizontal_space, vertical_radius)
+    return min(horizontal_space, vertical_radius)
 
 
 def draw_too_small(win):
