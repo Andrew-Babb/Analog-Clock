@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Clock face markers no longer overwritten by dot ring.
+
 ## v1.3
 
 - Centralized character and string rendering through safe drawing helpers.

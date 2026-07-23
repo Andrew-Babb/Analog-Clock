@@ -198,24 +198,24 @@ def draw_line(win, y0, x0, y1, x1, ch):
 
 
 def draw_face(win, cy, cx, radius):
+    steps = 120
+    for i in range(steps):
+        angle = i * (360 / steps)
+        y, x = polar_to_screen(cy, cx, radius, angle)
+        safe_addch(win, y, x, ".")
+
     for hour in range(12):
         angle = hour * 30
         y, x = polar_to_screen(cy, cx, radius, angle)
         label = "12" if hour == 0 else str(hour)
-        ch = "#" if hour % 3 == 0 else "*"
 
         if hour % 3 == 0:
             ly = y
             lx = x - (len(label) // 2)
             safe_addstr(win, ly, lx, label)
         else:
+            ch = "*"
             safe_addch(win, y, x, ch)
-
-    steps = 120
-    for i in range(steps):
-        angle = i * (360 / steps)
-        y, x = polar_to_screen(cy, cx, radius, angle)
-        safe_addch(win, y, x, ".")
 
 
 def maximum_fitted_radius(
