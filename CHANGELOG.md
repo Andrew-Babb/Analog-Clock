@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.3.1 - 2026-07-23
+
 ### Added
 
 - Created a `requirements.txt` file to declare the Windows-specific dependencies.
@@ -16,6 +18,7 @@
 - Synced render loop to wall-clock second boundaries.
 - Simplified key-polling loop using blocking getch timeout.
 - Fixed inconsistent indentation in maximum_fitted_radius.
+- Clock face now skips redundant redraws when seconds are hidden.
 
 ## v1.3
 
