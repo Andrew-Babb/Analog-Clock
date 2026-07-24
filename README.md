@@ -1,4 +1,4 @@
-# Analog Clock v1.3
+# Analog Clock v1.3.1
 
 Analog Clock is a terminal-based analog clock rendered with Python's `curses`
 module.  It draws an analog clock face, hour, minute, and optional second hands,
@@ -9,6 +9,13 @@ automatically fits the available terminal space, safely limits oversized manual
 radius requests, displays a clear message when the terminal is too small, and
 redraws immediately when the terminal is resized.  The `--no-seconds` option now
 removes seconds from both the analog and digital displays.
+
+Version 1.3.1 is a bugfix release.  Hour markers are no longer overwritten by
+the clock face dot ring, invalid timezone names are rejected with a clear
+message instead of an unhandled error, and `Ctrl-C` exits cleanly without a
+traceback.  The render loop is now synchronised to wall-clock second boundaries
+so the display no longer drifts during long runs, and redundant redraws are
+skipped when nothing on screen has changed.
 
 ## Requirements
 
@@ -85,7 +92,7 @@ The minimum supported radius is 5.  If the terminal cannot fit a clock at that s
 The clock face accounts for terminal cell proportions by scaling vertical
 distances, which helps the clock appear circular in typical terminal fonts.
 
-Terminal drawing operations are clipped to the available windows bounds to
+Terminal drawing operations are clipped to the available window's bounds to
 prevent ordinary edge and resize conditions from crashing the display.
 
 The refresh interval is measured with Python's monotonic clock so elapsed-time
