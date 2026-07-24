@@ -20,9 +20,10 @@ from zoneinfo import ZoneInfoNotFoundError
 # clock face looking circular instead of egg-shaped.
 Y_ASPECT = 0.5
 
-VERSION = "1.3"
+VERSION = "1.3.1"
 DEFAULT_TIMEZONE = "America/New_York"
 DEFAULT_REFRESH_RATE = 1.0
+MINUTE_REFRESH_RATE = 60.0
 MIN_RADIUS = 5
 
 
@@ -345,12 +346,16 @@ def main(stdscr, config):
     curses.curs_set(0)
     stdscr.timeout(20)
 
+    interval = config.refresh_rate
+    if not config.show_seconds:
+        interval = max(config.refresh_rate, MINUTE_REFRESH_RATE)
+
     while True:
         render(stdscr, config)
 
         now = time.time()
         deadline = time.monotonic() + (
-            config.refresh_rate - (now % config.refresh_rate)
+            interval - (now % interval)
         )
         while time.monotonic() < deadline:
             key = stdscr.getch()
