@@ -8,16 +8,18 @@
 
 - Created a `requirements.txt` file to declare the Windows-specific dependencies.
 
+## Changed
+
+- Cleaned up CHANGELOG formatting.
+
 ### Fixed
 
-- Clock face markers no longer overwritten by dot ring.
-- `-z, --timezone` error message now consistent for malformed strings.
-- Suppressed traceback on Ctrl-C Exit
-- Cleaned up CHANGELOG formatting
-- Documented windows-curses and tzdata as required depencies on Windows.
+- Fixed clock face markers being overwritten by the dot ring.
+- Made `-z/--timezone` error messages consistent for malformed input.
+- Suppressed traceback on Ctrl-C exit.
 - Synced render loop to wall-clock second boundaries.
 - Simplified key-polling loop using blocking getch timeout.
-- Fixed inconsistent indentation in maximum_fitted_radius.
+- Skipped redundant redraws when seconds are hidden.
 - Clock face now skips redundant redraws when seconds are hidden.
 
 ## v1.3
